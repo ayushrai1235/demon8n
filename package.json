@@ -1,0 +1,14 @@
+{
+  "name": "demon8n",
+  "version": "1.0.0",
+  "description": "User management microservice API",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "sqlite": "^5.1.1",
+    "sqlite3": "^5.1.7"
+  }
+}
