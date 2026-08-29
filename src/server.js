@@ -1,5 +1,6 @@
 const express = require('express');
 const usersRoute = require('./routes/users');
+const commentsRoute = require('./routes/comments');
 const { getDb } = require('./db');
 
 const app = express();
@@ -12,8 +13,9 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Users routes
+// Routes
 app.use('/users', usersRoute);
+app.use('/comments', commentsRoute);
 
 // Initialize DB and start server
 async function startServer() {

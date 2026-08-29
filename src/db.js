@@ -17,6 +17,18 @@ async function getDb() {
         email TEXT NOT NULL UNIQUE,
         role TEXT NOT NULL
       );
+
+      CREATE TABLE IF NOT EXISTS user_comments (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        author_name TEXT NOT NULL,
+        comment_text TEXT NOT NULL,
+        topic TEXT DEFAULT 'general',
+        is_pinned INTEGER DEFAULT 0,
+        view_count INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id)
+      );
     `);
 
     const countResult = await dbInstance.get('SELECT COUNT(*) as count FROM users');
@@ -28,6 +40,17 @@ async function getDb() {
         ('Charlie Brown', 'charlie@example.com', 'designer'),
         ('Diana Prince', 'diana@example.com', 'manager'),
         ('Evan Wright', 'evan@example.com', 'developer');
+      `);
+    }
+
+    const commentCountResult = await dbInstance.get('SELECT COUNT(*) as count FROM user_comments');
+    if (commentCountResult.count === 0) {
+      await dbInstance.run(`
+        INSERT INTO user_comments (user_id, author_name, comment_text, topic, is_pinned, view_count) VALUES
+        (1, 'Alice Smith', 'Architecture review completed for microservice authentication.', 'architecture', 1, 35),
+        (2, 'Bob Jones', 'Refactored SQLite database initialization routines.', 'database', 0, 12),
+        (2, 'Bob Jones', 'Added integration tests for express routing layer.', 'testing', 1, 8),
+        (3, 'Charlie Brown', 'Updated dark mode component color tokens.', 'frontend', 0, 42);
       `);
     }
   }
